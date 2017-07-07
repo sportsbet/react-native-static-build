@@ -1,0 +1,21 @@
+{
+  "name": "react-native-static-build",
+  "version": "1.0.0",
+  "description": "Pre-built static binaries for React Native on iOS",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": {
+    "name": "Tyrone Trevorrow",
+    "email": "tyrone.trevorrow@sportsbet.com.au",
+  },
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sportsbet/react-native-static-build.git"
+  },
+  "dependencies": {
+    "react-native": "=0.45.1"
+  }
+}
