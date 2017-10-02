@@ -34,6 +34,14 @@ REACT_LIBS=(
 	WebSocket
 )
 
+REJECT_ARCHIVES=(
+	libdouble-conversion.a
+	libjschelpers.a
+	libthird-party.a
+	libcxxreact.a
+	libyoga.a
+)
+
 # Parameters:
 # 1. debug/release
 # 2. simulator/device
@@ -128,6 +136,12 @@ join_libraries () {
 			print_usage "$SCRIPTNAME"
 	esac
 
+	# Delete archives that we don't need
+	for reject_lib in "${REJECT_ARCHIVES[@]}"; do
+		echo "Deleting $build_dir/${reject_lib}"
+		rm "$build_dir/${reject_lib}"
+	done
+
 	# Link all of React Native's .a files into a single .a file:
 	pushd "$build_dir" > /dev/null
 	echo "$PWD"
@@ -158,7 +172,7 @@ pack_universal_binary () {
 	join_libraries "$configuration" "simulator"
 	join_libraries "$configuration" "device"	
 
-	# Join the device / simular .a files into a fat .a file:
+	# Join the device / simulator .a files into a fat .a file:
 	local xcrun_args=(
 		-sdk iphoneos 
 		lipo -create 
