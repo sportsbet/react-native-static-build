@@ -1,6 +1,6 @@
 # React Native Static Build
 
-This repo provides the current (0.45) version of React Native statically
+This repo provides a version (=0.48.4) of React Native statically
 compiled using the provided `build.sh` script. There are a number of
 advantages to doing this:
 
@@ -23,7 +23,7 @@ First ensure your environment is clean.
 You can now check out the version of React Native you want using NPM/Yarn:
 
 ```sh
-mkdir -p node_modules && npm install react-native@0.45
+mkdir -p node_modules && npm install react-native@0.48.4
 ```
 
 Build against this React Native module:
