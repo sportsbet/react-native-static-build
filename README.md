@@ -88,7 +88,7 @@ Navigator, in whichever group you keep your libraries.
 
 ### 4. Edit your .pbxproj
 
-Xcode will include this library with absolute paths, so it won't work if you
+Xcode will include this library with absolute paths, so it won't work between
 build configurations, or users. There is no way to change the location for
 *libraries* to relative paths, so you'll need to edit the xcodeproj manually.
 
