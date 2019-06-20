@@ -79,10 +79,9 @@ Shell: `/bin/bash`
 ```mkdir -p "$BUILT_PRODUCTS_DIR"
 rm -rf "$BUILT_PRODUCTS_DIR/libReact.a"
 if [ "$CONFIGURATION" = "Debug" ]; then
-unzip -o "$PROJECT_DIR/Components/React Native/libReact.debug.a.zip" -d "$BUILT_PRODUCTS_DIR"
+    unzip -o "$PROJECT_DIR/[subdirectory]/libReact.debug.a.zip" -d "$BUILT_PRODUCTS_DIR"
 else
-unzip -o "$PROJECT_DIR/Components/React Native/libReact.release.a.zip" -d "$BUILT_PRODUCTS_DIR"
-fi
+    unzip -o "$PROJECT_DIR/[subdirectory]/libReact.release.a.zip" -d "$BUILT_PRODUCTS_DIR"
 fi
 ```
 
