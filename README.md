@@ -1,17 +1,17 @@
 # React Native Static Build
 
-This repo provides a version (=0.48.4) of React Native statically
+This repo provides a version (=0.59.9) of React Native statically
 compiled using the provided `build.sh` script. There are a number of
 advantages to doing this:
 
-* Don't have to compile & analyze(!) React Native every time you clean.
-* Faster CI/CD
-* Parallelize build in your scheme works again
-* No more weird issues with `#import <React/RCT*.h>`
+- Don't have to compile & analyze(!) React Native every time you clean.
+- Faster CI/CD
+- Parallelize build in your scheme works again
+- No more weird issues with `#import <React/RCT*.h>`
 
 # Building a New Version
 
-Currently only works with **Xcode 8.3.x**. Make sure Xcode 8.3.x is your
+Currently only works with **Xcode 10.x**. Make sure Xcode 10.x is your
 default toolchain by using `xcode-select`.
 
 First ensure your environment is clean.
@@ -23,7 +23,7 @@ First ensure your environment is clean.
 You can now check out the version of React Native you want using NPM/Yarn:
 
 ```sh
-mkdir -p node_modules && npm install react-native@0.48.4
+mkdir -p node_modules && npm install react-native@0.59.9
 ```
 
 Build against this React Native module:
@@ -34,9 +34,24 @@ Build against this React Native module:
 
 If there are any errors they'll appear in `build/xcodebuild.*.log`.
 
+You can build the community libraries:
+
+```sh
+./build.sh -build-deps node_modules
+```
+
+### Special Instruction for 0.58.3
+
+0.58.3 has a bug in the `xcodeproj` which results in linker errors. Open
+`node_modules/react-native/React/React.xcodeproj` and find
+`InspectorInterfaces.cpp` and remove it from the `React` target (it should
+only be in the `jsinspector` target).
+
+---
+
 After building, copy the `libReact.debug.a` and `libReact.release.a`, and the
 `include` folder into your own project's folder structure. These files are
-massive, usually over 100MB, so consider using Git LFS.
+massive, so consider using Git LFS.
 
 # Integrating with Xcode
 
@@ -57,16 +72,17 @@ using just build settings, or:
 
 ### 1. Create a new build phase
 
-This phase should execute *before* Compile Sources.
+This phase should execute _before_ Compile Sources.
 
 Shell: `/bin/bash`
 
 ```mkdir -p "$BUILT_PRODUCTS_DIR"
 rm -rf "$BUILT_PRODUCTS_DIR/libReact.a"
 if [ "$CONFIGURATION" = "Debug" ]; then
-    cp "$PROJECT_DIR/[path-to]/libReact.debug.a" "$BUILT_PRODUCTS_DIR/libReact.a"
+unzip -o "$PROJECT_DIR/Components/React Native/libReact.debug.a.zip" -d "$BUILT_PRODUCTS_DIR"
 else
-    cp "$PROJECT_DIR/[path-to]/libReact.release.a" "$BUILT_PRODUCTS_DIR/libReact.a"
+unzip -o "$PROJECT_DIR/Components/React Native/libReact.release.a.zip" -d "$BUILT_PRODUCTS_DIR"
+fi
 fi
 ```
 
@@ -79,18 +95,18 @@ for it to finish.
 
 Open your app's `$BUILT_PRODUCTS_DIR` in Finder. It's usually something like:
 
-	$HOME/Library/Developer/Xcode/DerivedData/[Target]-[robotbarf]/Build/Products/[BuildConfiguration]-[sdk]/
+    $HOME/Library/Developer/Xcode/DerivedData/[Target]-[robotbarf]/Build/Products/[BuildConfiguration]-[sdk]/
 
 Then, drag the `libReact.a` file from this folder into your Xcode Project
 Navigator, in whichever group you keep your libraries.
 
-**Do not check *copy files if needed*!**
+**Do not check _copy files if needed_!**
 
 ### 4. Edit your .pbxproj
 
 Xcode will include this library with absolute paths, so it won't work between
 build configurations, or users. There is no way to change the location for
-*libraries* to relative paths, so you'll need to edit the xcodeproj manually.
+_libraries_ to relative paths, so you'll need to edit the xcodeproj manually.
 
 Open `[YourProject].xcodeproj/project.pbxproj` in your favourite text editor.
 
@@ -113,24 +129,28 @@ In the Project Editor, in your target's General tab, click the `+` and add
 In the Build Settings for your target, find the **Header Search Paths** option,
 and add the path to your `include` dir. Should be something like:
 
-	$(PROJECT_DIR)/Libraries/react-native/include
+    $(PROJECT_DIR)/Libraries/react-native/include
 
+Repeat these steps for `libReactCommunity` if you want those community
+libraries.
 
 # Adding new React Native Libraries
 
 This build currently bundles the following React Native libraries together:
 
-* ActionSheetIOS
-* Geolocation
-* Image
-* LinkingIOS
-* NativeAnimation
-* Network
-* Settings
-* Text
-* Vibration
-* WebSocket
+- ActionSheetIOS
+- Geolocation
+- Image
+- LinkingIOS
+- NativeAnimation
+- Network
+- Settings
+- Text
+- Vibration
+- WebSocket
 
 If you need to add more, make sure it's available in the
 `node_modules/react-native/Libraries` folder, then just add it to the list in
-`build.sh` starting on line 24.
+`build.sh` starting on line 26.
+
+You can add additional community libraries in the `REACT_COMMUNITY_LIBS` array.

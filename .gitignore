@@ -3,3 +3,4 @@ libReact.debug.a
 libReact.release.a
 node_modules
 include
+*.zip

@@ -8,7 +8,7 @@
   },
   "author": {
     "name": "Tyrone Trevorrow",
-    "email": "tyrone.trevorrow@sportsbet.com.au",
+    "email": "tyrone.trevorrow@sportsbet.com.au"
   },
   "license": "MIT",
   "repository": {
@@ -16,6 +16,9 @@
     "url": "git+https://github.com/sportsbet/react-native-static-build.git"
   },
   "dependencies": {
-    "react-native": "=0.45.1"
+    "react-native": "=0.59.9",
+    "@react-native-community/netinfo": "^3.1.0",
+    "react-native-gesture-handler": "^1.1.0",
+    "react-native-webview": "5.5.0"
   }
 }
